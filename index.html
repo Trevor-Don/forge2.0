@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Forge AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Mammoth.js for DOCX extraction -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js"></script>
+    <!-- Mermaid.js for Diagrams -->
+    <script src="https://cdn.jsdelivr.net/npm/mermaid@10.9.0/dist/mermaid.min.js"></script>
+    <!-- Fonts: Barlow Condensed for headings, Inter for body -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+              display: ['"Barlow Condensed"', 'sans-serif'],
+              mono: ['"JetBrains Mono"', 'monospace'],
+            },
+            colors: {
+              glass: {
+                100: 'rgba(255, 255, 255, 0.05)',
+                200: 'rgba(255, 255, 255, 0.1)',
+                300: 'rgba(255, 255, 255, 0.2)',
+              },
+              brand: {
+                dark: 'rgb(var(--color-bg) / <alpha-value>)',
+                card: 'rgb(var(--color-card) / <alpha-value>)',
+                accent: 'rgb(var(--color-accent) / <alpha-value>)',
+                secondary: 'rgb(var(--color-secondary) / <alpha-value>)',
+              }
+            },
+            animation: {
+              'float': 'float 8s ease-in-out infinite',
+              'pulse-slow': 'pulse 6s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+              'glow': 'glow 2s ease-in-out infinite alternate',
+            },
+            keyframes: {
+              float: {
+                '0%, 100%': { transform: 'translateY(0)' },
+                '50%': { transform: 'translateY(-10px)' },
+              },
+              glow: {
+                'from': { boxShadow: '0 0 10px -5px rgba(var(--color-accent), 0.3)' },
+                'to': { boxShadow: '0 0 25px 5px rgba(var(--color-accent), 0.6)' }
+              }
+            },
+            backgroundImage: {
+              'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
+            },
+            typography: (theme) => ({
+              DEFAULT: {
+                css: {
+                  color: theme('colors.gray.300'),
+                  h1: { color: theme('colors.white'), fontFamily: 'Barlow Condensed', letterSpacing: '0.05em' },
+                  h2: { color: theme('colors.white'), fontFamily: 'Barlow Condensed', letterSpacing: '0.05em' },
+                  h3: { color: theme('colors.white') },
+                  strong: { color: theme('colors.white'), fontWeight: 'bold' },
+                  a: { color: theme('colors.brand.secondary') },
+                  code: { color: theme('colors.brand.accent'), backgroundColor: 'rgba(255,255,255,0.1)', padding: '2px 4px', borderRadius: '4px' },
+                },
+              },
+            }),
+          },
+        },
+        plugins: [
+        ]
+      }
+      
+      document.addEventListener('DOMContentLoaded', function() {
+        if (window.mermaid) {
+          mermaid.initialize({ 
+            startOnLoad: false, 
+            theme: 'base',
+            securityLevel: 'loose',
+            themeVariables: {
+              darkMode: true,
+              background: 'transparent',
+              
+              // Nodes (Galactic Teal Theme)
+              primaryColor: '#093A42',      // Dark Teal Card
+              mainBkg: '#093A42',           // Node Background
+              primaryBorderColor: '#14b8a6', // Brand Accent Border
+              
+              // Text
+              primaryTextColor: '#ffffff',  // White Text
+              textColor: '#ffffff',
+              
+              // Edges/Lines
+              lineColor: '#5eead4',         // Teal 300
+              
+              // Secondary/Tertiary
+              secondaryColor: '#041C23',
+              tertiaryColor: '#041C23',
+              
+              fontFamily: '"JetBrains Mono", monospace'
+            }
+          });
+        }
+      });
+    </script>
+    <style>
+      :root {
+        /* Galactic Teal Theme */
+        --color-bg: 4 28 35;        /* #041C23 - Deep Teal */
+        --color-card: 9 58 66;      /* #093A42 - Lighter Teal/Green */
+        --color-accent: 20 184 166; /* #14b8a6 - Teal 500 */
+        --color-secondary: 255 255 255; /* White accents */
+      }
+
+      body {
+        background-color: rgb(var(--color-bg));
+        color: #ffffff;
+        font-family: 'Inter', sans-serif;
+        overflow-x: hidden;
+        transition: background-color 0.5s ease;
+      }
+      
+      h1, h2, h3, h4, h5, h6 {
+        font-family: 'Barlow Condensed', sans-serif;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+
+      /* Soft Grid */
+      .bg-grid {
+        background-size: 40px 40px;
+        background-image: linear-gradient(to right, rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                          linear-gradient(to bottom, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+      }
+      
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: transparent; 
+      }
+      ::-webkit-scrollbar-thumb {
+        background: rgba(255, 255, 255, 0.2); 
+        border-radius: 3px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: rgba(255, 255, 255, 0.4); 
+      }
+      .no-scrollbar::-webkit-scrollbar {
+        display: none;
+      }
+      .no-scrollbar {
+        -ms-overflow-style: none;
+        scrollbar-width: none;
+      }
+
+      /* Galactic Glass Panel */
+      .glass-panel {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        border-radius: 2rem; /* Rounder corners for Galactic look */
+      }
+      
+      .glass-button {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.3s ease;
+      }
+      .glass-button:hover {
+        background: rgba(255, 255, 255, 0.2);
+        border-color: rgba(255, 255, 255, 0.4);
+        transform: translateY(-2px);
+      }
+
+      .text-glow {
+        text-shadow: 0 0 20px rgba(var(--color-accent), 0.5);
+      }
+
+      /* Highlighting Effect - Enhanced for visibility */
+      .highlight-mark {
+        background: rgba(var(--color-accent), 0.35);
+        color: rgb(var(--color-accent));
+        padding: 1px 6px;
+        border-radius: 4px;
+        font-weight: 800;
+        border-bottom: 2px solid rgba(var(--color-accent), 0.6);
+        box-shadow: 0 0 20px rgba(var(--color-accent), 0.25);
+        letter-spacing: 0.03em;
+        display: inline-block;
+      }
+      
+      /* Markdown Table Styles */
+      .markdown-content table {
+        width: 100%;
+        border-collapse: collapse;
+        margin: 1.5rem 0;
+        font-size: 0.9rem;
+      }
+      .markdown-content th {
+        background: rgba(255,255,255,0.1);
+        padding: 0.75rem;
+        text-align: left;
+        font-weight: 600;
+        color: white;
+        border-radius: 4px;
+      }
+      .markdown-content td {
+        padding: 0.75rem;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      }
+      
+      /* Mermaid Styles */
+      .mermaid {
+        display: flex;
+        justify-content: center;
+        margin: 2rem 0;
+        background: rgba(0,0,0,0.2);
+        padding: 1rem;
+        border-radius: 1rem;
+      }
+
+      /* 3D Flip Card Utilities - Manually added as Tailwind CDN misses these */
+      .perspective-1000 {
+        perspective: 1000px;
+      }
+      .preserve-3d {
+        transform-style: preserve-3d;
+      }
+      .backface-hidden {
+        backface-visibility: hidden;
+        -webkit-backface-visibility: hidden;
+      }
+      .rotate-y-180 {
+        transform: rotateY(180deg);
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react/": "https://aistudiocdn.com/react@^19.2.0/",
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "lucide-react": "https://aistudiocdn.com/lucide-react@^0.554.0",
+    "@google/genai": "https://aistudiocdn.com/@google/genai@^1.30.0",
+    "react-markdown": "https://esm.sh/react-markdown@9.0.1?external=react,react-dom",
+    "remark-gfm": "https://esm.sh/remark-gfm@4.0.0?bundle",
+    "jspdf": "https://esm.sh/jspdf@2.5.1",
+    "html2canvas": "https://esm.sh/html2canvas@1.4.1",
+    "docx": "https://esm.sh/docx@8.5.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+  </body>
+</html>

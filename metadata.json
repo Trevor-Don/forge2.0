@@ -1,0 +1,7 @@
+{
+  "name": "Forge AI",
+  "description": "A gamified, glassmorphic AI study companion that transforms documents into interactive summaries, flashcards, and quizzes.",
+  "requestFramePermissions": [
+    "microphone"
+  ]
+}
