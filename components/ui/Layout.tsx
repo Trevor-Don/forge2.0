@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { LogOut, User as UserIcon, Home, PlusCircle, Users, MessageSquare, Menu, X } from 'lucide-react';
+import { LogOut, User as UserIcon, Home, PlusCircle, Users, MessageSquare, Menu, X, Library } from 'lucide-react';
 import { ThemeId, Theme } from '../../types';
 
 interface LayoutProps {
@@ -94,6 +94,7 @@ export const Layout: React.FC<LayoutProps> = ({
 
           <nav className="glass-panel rounded-full px-2 py-1 flex items-center gap-1">
              <NavPill icon={<Home className="w-4 h-4"/>} label="Home" active={activeTab === 'dashboard'} onClick={() => onNavigate('dashboard')} />
+             <NavPill icon={<Library className="w-4 h-4"/>} label="Library" active={activeTab === 'library'} onClick={() => onNavigate('library')} />
              <NavPill icon={<PlusCircle className="w-4 h-4"/>} label="Create" active={activeTab === 'create'} onClick={() => onNavigate('create')} />
              <NavPill icon={<Users className="w-4 h-4"/>} label="Groups" active={activeTab === 'groups'} onClick={() => onNavigate('groups')} />
              <NavPill icon={<MessageSquare className="w-4 h-4"/>} label="Chat" active={activeTab === 'chatbot'} onClick={() => onNavigate('chatbot')} />
@@ -128,6 +129,7 @@ export const Layout: React.FC<LayoutProps> = ({
           <div className="fixed inset-0 z-40 bg-black/95 backdrop-blur-xl pt-24 px-6 flex flex-col gap-4 md:hidden animate-in slide-in-from-top-10 fade-in duration-300">
               <div className="flex flex-col gap-2">
                 <MobileMenuLink icon={<Home/>} label="Home" active={activeTab === 'dashboard'} onClick={() => { onNavigate('dashboard'); setIsMenuOpen(false); }} />
+                <MobileMenuLink icon={<Library/>} label="Library" active={activeTab === 'library'} onClick={() => { onNavigate('library'); setIsMenuOpen(false); }} />
                 <MobileMenuLink icon={<PlusCircle/>} label="Create New" active={activeTab === 'create'} onClick={() => { onNavigate('create'); setIsMenuOpen(false); }} />
                 <MobileMenuLink icon={<Users/>} label="Groups" active={activeTab === 'groups'} onClick={() => { onNavigate('groups'); setIsMenuOpen(false); }} />
                 <MobileMenuLink icon={<MessageSquare/>} label="AI Chat" active={activeTab === 'chatbot'} onClick={() => { onNavigate('chatbot'); setIsMenuOpen(false); }} />

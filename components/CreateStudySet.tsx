@@ -1,4 +1,3 @@
-
 import React, { useState, useRef } from 'react';
 import { Upload, FileText, X, Loader2, Sparkles, Plus, FileAudio, Layers, Split, Tag } from 'lucide-react';
 import { GeminiService } from '../services/geminiService';
@@ -25,14 +24,25 @@ export const CreateStudySet: React.FC<CreateStudySetProps> = ({ user, onCreated 
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files.length > 0) {
-      const selectedFiles = Array.from(e.target.files);
+      const selectedFiles = Array.from(e.target.files) as File[];
       
       if (files.length + selectedFiles.length > 20) {
         alert(`You can only upload a maximum of 20 files. You currently have ${files.length}.`);
         return;
       }
 
-      const newFiles = [...files, ...selectedFiles];
+      // Pre-filter checks
+      const validFiles = selectedFiles.filter(f => {
+          if (f.name.toLowerCase().endsWith('.doc')) {
+              alert(`File "${f.name}" is a legacy Word document (.doc) and is not supported. Please save it as .docx or PDF.`);
+              return false;
+          }
+          return true;
+      });
+
+      if (validFiles.length === 0) return;
+
+      const newFiles = [...files, ...validFiles];
       setFiles(newFiles);
       
       // Reset input value to allow selecting same files again if needed
@@ -88,8 +98,15 @@ export const CreateStudySet: React.FC<CreateStudySetProps> = ({ user, onCreated 
   };
 
   const processFile = async (file: File): Promise<{ data: string, mimeType: string }> => {
+    const lowerName = file.name.toLowerCase();
+
+    // Explicitly block legacy .doc
+    if (lowerName.endsWith('.doc')) {
+        throw new Error(`File "${file.name}" is unsupported. Please convert .doc to .docx or PDF.`);
+    }
+
     // Handle DOCX via Mammoth
-    if (file.name.endsWith('.docx')) {
+    if (lowerName.endsWith('.docx')) {
       if (!(window as any).mammoth) {
         throw new Error("Processing library not loaded. Please refresh.");
       }
@@ -104,12 +121,12 @@ export const CreateStudySet: React.FC<CreateStudySetProps> = ({ user, onCreated 
     
     let mimeType = file.type;
     if (!mimeType) {
-       if (file.name.endsWith('.pdf')) mimeType = 'application/pdf';
-       else if (file.name.endsWith('.txt')) mimeType = 'text/plain';
-       else if (file.name.endsWith('.png')) mimeType = 'image/png';
-       else if (file.name.endsWith('.jpg') || file.name.endsWith('.jpeg')) mimeType = 'image/jpeg';
-       else if (file.name.endsWith('.mp3')) mimeType = 'audio/mp3';
-       else if (file.name.endsWith('.wav')) mimeType = 'audio/wav';
+       if (lowerName.endsWith('.pdf')) mimeType = 'application/pdf';
+       else if (lowerName.endsWith('.txt')) mimeType = 'text/plain';
+       else if (lowerName.endsWith('.png')) mimeType = 'image/png';
+       else if (lowerName.endsWith('.jpg') || lowerName.endsWith('.jpeg')) mimeType = 'image/jpeg';
+       else if (lowerName.endsWith('.mp3')) mimeType = 'audio/mp3';
+       else if (lowerName.endsWith('.wav')) mimeType = 'audio/wav';
     }
     
     return { data: base64Data, mimeType: mimeType || 'application/pdf' };
@@ -120,6 +137,7 @@ export const CreateStudySet: React.FC<CreateStudySetProps> = ({ user, onCreated 
     if (files.length === 0 || !title) return;
 
     setIsProcessing(true);
+    setStatus('Initializing...');
     
     try {
       if (files.length > 1 && generationMode === 'batch') {
@@ -199,7 +217,7 @@ export const CreateStudySet: React.FC<CreateStudySetProps> = ({ user, onCreated 
     } catch (error) {
       console.error(error);
       setStatus(`Error: ${(error as Error).message || 'Failed to process document'}`);
-      setTimeout(() => setIsProcessing(false), 3000);
+      setTimeout(() => setIsProcessing(false), 4000);
     }
   };
 

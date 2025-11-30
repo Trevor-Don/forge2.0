@@ -125,7 +125,7 @@ const App: React.FC = () => {
         />
       ) : (
         <>
-          {activeTab === 'dashboard' && (
+          {(activeTab === 'dashboard' || activeTab === 'library') && (
             <Dashboard 
               user={user}
               studySets={studySets}
@@ -133,6 +133,7 @@ const App: React.FC = () => {
               onSelectSet={handleSelectSet}
               onCreateGroup={handleCreateGroup}
               onNavigate={handleNavigate}
+              initialView={activeTab === 'library' ? 'library' : 'home'}
             />
           )}
           
