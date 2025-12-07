@@ -14,6 +14,13 @@ export const MermaidBlock: React.FC<MermaidBlockProps> = ({ code }) => {
   const sanitizeMermaidCode = (rawCode: string): string => {
     let sanitized = rawCode.trim();
 
+    // 0. Remove Backticks (Critical fix for code snippets in nodes)
+    // Replaces `code` with 'code' to avoid syntax clashes
+    sanitized = sanitized.replace(/`/g, "'");
+
+    // Fix Malformed Dotted Arrows (e.g. --.-> which happens often)
+    sanitized = sanitized.replace(/--\.->/g, '-.->');
+
     // 1. Fix Markdown List Numbering (e.g., "1. A-->B" -> "A-->B")
     sanitized = sanitized.replace(/^\s*\d+[\.)]\s+/gm, '');
     

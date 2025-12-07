@@ -1,3 +1,4 @@
+
 import React, { useState, useRef, useEffect } from 'react';
 import { StudySet, StudyMode, Flashcard, PodcastConfig } from '../types';
 import { GeminiService } from '../services/geminiService';
@@ -408,8 +409,13 @@ export const StudyView: React.FC<StudyViewProps> = ({ set, initialMode = StudyMo
                              <ReactMarkdown 
                                remarkPlugins={[remarkGfm]}
                                components={{
-                                 h1: ({node, ...props}) => <h1 className="text-4xl font-display font-bold text-white mb-6 mt-8 border-b border-white/10 pb-4" {...props} />,
-                                 h2: ({node, ...props}) => <h2 className="text-2xl font-display font-bold text-brand-accent mb-4 mt-8" {...props} />,
+                                 h1: ({node, ...props}) => <h1 className="text-4xl font-display font-bold text-white mb-8 pb-4 border-b border-white/10 leading-tight" {...props} />,
+                                 h2: ({node, ...props}) => <h2 className="text-2xl font-display font-bold text-brand-accent mb-6 mt-12 flex items-center gap-2" {...props} />,
+                                 h3: ({node, ...props}) => <h3 className="text-xl font-display font-bold text-white/90 mb-4 mt-8" {...props} />,
+                                 p: ({node, ...props}) => <p className="mb-6 leading-loose text-gray-300 font-light" {...props} />,
+                                 ul: ({node, ...props}) => <ul className="list-disc list-outside ml-6 mb-6 space-y-2 text-gray-300" {...props} />,
+                                 ol: ({node, ...props}) => <ol className="list-decimal list-outside ml-6 mb-6 space-y-2 text-gray-300" {...props} />,
+                                 li: ({node, ...props}) => <li className="pl-2 leading-relaxed" {...props} />,
                                  strong: ({node, ...props}) => <strong className="highlight-mark" {...props} />,
                                  blockquote: ({children}) => {
                                    const text = String(children?.toString() || '');
